@@ -1,6 +1,7 @@
 import { Industry, Prisma, RegulatoryElection } from '@prisma/client';
 
 export const RESIDNET_JOHN_DOE: Prisma.ResidentCreateInput = {
+  sub: 'ffb0991b-fad9-4d4e-854d-f82db78d9c0d',
   firstName: 'John',
   lastName: 'Doe',
   fullName: 'John Doe',

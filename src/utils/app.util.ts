@@ -17,8 +17,6 @@ export async function setupApp() {
   configureApp(app);
   // start the server
   await app.listen(3000);
-
-  logger.log(`application started on ${await app.getUrl()}`);
 }
 
 /**

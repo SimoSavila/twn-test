@@ -29,8 +29,14 @@ $ pnpm run start:dev
 # production mode
 $ pnpm run start:prod
 ```
+
 After running any of these commands swagger can be found http://localhost:3000/documentation
 and YAML http://localhost:3000/documentation-yaml
+
+To seed development Database run command:
+```bash
+$ pnpm db:seed
+```
 
 ## Test
 
