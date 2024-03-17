@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Resident schema
+model Resident {
+  sub                            String                 @id @default(uuid()) @map("_id")
+  firstName                      String
+  lastName                       String
+  fullName                       String
+  permitNumber                   Int
+  permitNumberQrCode             String?
+  dateOfBirth                    DateTime
+  email                          String
+  countyOfBirth                  String
+  citizenship                    String
+  gender                         String
+  address                        Address
+  phoneNumber                    String
+  typeOfRegistration             typeOfRegistration
+  typeOfRegistrationSub          typeOfRegistrationSub?
+  industry                       Industry? // ENUM?
+  willWorkInPhysicalJurisdiction Boolean
+  regulatoryElection             RegulatoryElection? // ENUM?
+  regulatoryElectionSub          String?
+  firstRegistrationDate          DateTime               @default(now())
+  nextSubscriptionPaymentDate    DateTime
+  profilePicture                 String
+  status                         residentStatus
+  residencyEndDate               DateTime?
+}
+
+type Address {
+  country           String
+  city              String
+  state             String?
+  streetAddress     String
+  zipCode           String
+  isVerifiedAddress Boolean
+}
+
+model IndustryChangeApplication {
+  id           String              @id @default(auto()) @map("_id") @db.ObjectId
+  residentSub  String
+  status       ApplicationStatus
+  submittedAt  DateTime?           @default(now())
+  createdAt    DateTime            @default(now())
+  createdBy    String?
+  updatedAt    DateTime            @default(now())
+  updatedBy    String?
+  objectStatus ObjectStatus
+  decision     Decision?
+  current      IndustryInformation
+  requested    IndustryInformation
+}
+
+type Decision {
+  decidedAt       DateTime?
+  decidedBy       String?
+  rejectionReason String?
+}
+
+type IndustryInformation {
+  willWorkInPhysicalJurisdiction Boolean
+  industry                       Industry?
+  regulatoryElection             RegulatoryElection?
+  regulatoryElectionSub          String?
+}
+
+enum Industry {
+  AGRICULTURAL
+  CONSTRUCTION
+  ENERGY
+  FINANCE_AND_INSURANCE
+  FOOD
+  HEALTH
+  MANUFACTURING
+  MINING_AND_SUBSURFACE
+  PRIVATE_SECURITY
+  WASTE_MANAGEMENT
+}
+
+enum RegulatoryElection {
+  AUSTRALIA
+  AUSTRIA
+  BELGIUM
+  CANADA
+  CHILE
+  ROATAN_COMMON_LAW_CODE
+  DENMARK
+  DUBAI
+  ESTONIA
+  FINLAND
+  FRANCE
+  GERMANY
+  HONDURAS
+  HONG_KONG
+  ICELAND
+  IRELAND
+  ISRAEL
+  ITALY
+  JAPAN
+  LUXEMBOURG
+  MEXICO
+  NETHERLANDS
+  NEW_ZEALAND
+  null
+  NORWAY
+  PETITION_FOR_TAILORED_REGULATION_GRANTED
+  PETITION_FOR_TAILORED_REGULATION_PENDING
+  POLAND
+  SINGAPORE
+  SOUTH_KOREA
+  SPAIN
+  SWEDEN
+  SWITZERLAND
+  UK
+  USA
+}
+
+enum ApplicationStatus {
+  IN_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum ObjectStatus {
+  CURRENT
+  DELETED
+}
+
+enum residentStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum typeOfRegistration {
+  E_RESIDENCY
+  RESIDENCY
+  LIMITED_E_RESIDENCY
+}
+
+enum typeOfRegistrationSub {
+  HONDURAN
+  INTERNATIONAL
+}
